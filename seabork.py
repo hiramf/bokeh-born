@@ -17,26 +17,12 @@ from scipy.special import erf
 from statsmodels.nonparametric.kde import KDEUnivariate
 
 
-
-
-def matrix_data(dataframe):
-    _corr_matrix = dataframe.corr()
-
-    mask = np.zeros_like(_corr_matrix, dtype=np.bool)
-    mask[np.triu_indices_from(mask)] = True
-    corr_matrix = _corr_matrix.mask(mask).T
-
-    corr = corr_matrix.stack().to_frame('Correlation')
-    corr.index.rename(['y', 'x'], inplace=True)
-    corr.reset_index(inplace=True)
-    return corr
-
-
 def matrix_figure(DataFrame, name_mappings=None):
 
+    # Create Matrix Data
     _corr_matrix = DataFrame.corr().round(3)
     factors = list(DataFrame.columns)
-    
+
     mask = np.zeros_like(_corr_matrix, dtype=np.bool)
     mask[np.triu_indices_from(mask)] = True
     corr_matrix = _corr_matrix.mask(mask).T
