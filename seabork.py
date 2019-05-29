@@ -17,24 +17,24 @@ from scipy.special import erf
 from statsmodels.nonparametric.kde import KDEUnivariate
 
 
-def matrix_figure(DataFrame, name_mappings=None):
+def matrix_figure(df):
 
     # Create Matrix Data
-    _corr_matrix = DataFrame.corr().round(3)
-    factors = list(DataFrame.columns)
+    _corr_matrix = df.corr().round(3)
+    factors = list(df.columns)
 
     mask = np.zeros_like(_corr_matrix, dtype=np.bool)
     mask[np.triu_indices_from(mask)] = True
     corr_matrix = _corr_matrix.mask(mask).T
 
-    df = corr_matrix.stack().to_frame('Correlation')
-    df.index.rename(['y', 'x'], inplace=True)
-    df.reset_index(inplace=True)
+    corr = corr_matrix.stack().to_frame('Correlation')
+    corr.index.rename(['y', 'x'], inplace=True)
+    corr.reset_index(inplace=True)
 
     # Create Figure
     colors = RdBu[11][::-1]
     mapper = LinearColorMapper(palette=colors, low=-1, high=1)
-    source = ColumnDataSource(df)
+    source = ColumnDataSource(corr)
 
     color_bar = ColorBar(color_mapper=mapper, major_label_text_font_size="8pt",
                      ticker=FixedTicker(ticks=np.linspace(-1,1,5)),
@@ -48,15 +48,15 @@ def matrix_figure(DataFrame, name_mappings=None):
                y_axis_location = 'right',
                x_axis_location = 'above'
               )
-    rect = p.rect(x='x', y='x',
+    rect = p.rect(x='x', y='y',
            width=0.95, height=0.95,
-           source=df,
+           source=source,
            fill_color={'field':'Correlation', 'transform':mapper},
            name='rect'
           )
 
     text_props = {"source": source, "text_align": "center", "text_baseline": "middle"}
-    r = p.text(x='x', y="x",
+    r = p.text(x='x', y="y",
         text="Correlation",
         text_font_size="20pt",
         source=source,
