@@ -88,8 +88,8 @@ def matrix_figure(df):
     p.add_tools(hover)
     return p
 
-def residuals_time(DataFrame):
-    #Dataframe with datetime axis and residuals as column "e"
+def residuals_time(df):
+    #Dataframe with datetime index and residuals as column "e"
     colors = Blues[9]+Blues[9][::-1]
     mapper = LinearColorMapper(palette=colors, low=df['e'].min(), high=df['e'].max())
     cds = ColumnDataSource(df)
@@ -99,8 +99,6 @@ def residuals_time(DataFrame):
 
     hover=HoverTool(tooltips=[("Date","@Date{%Y-%b}"), ('Residual','@e{0,0}')],
     formatters={"Date":"datetime"}, mode='vline')
-
-
     return p
 
 def kde(data, kernel='gau', bw='scott', gridsize=None, cut=3, clip=(-np.inf, np.inf),
@@ -129,7 +127,6 @@ def distplot(e):
         plot_width=800, plot_height=400)
     p.patch(x, y, alpha=0.8, line_width=3, fill_alpha=0.2)
     p.quad(top=hist, bottom=0, left=edges[:-1], right=edges[1:], line_color=None, alpha=0.3)
-    print(e)
     p.segment(x0=e, x1=e, y0=0, y1=np.mean(y)/4, line_width=2, alpha=0.8)
     p.yaxis.visible=False
     p.title.align = 'center'
