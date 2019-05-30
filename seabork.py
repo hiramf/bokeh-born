@@ -1,23 +1,24 @@
-from bokeh.plotting import figure
-from bokeh.models import LinearColorMapper, ColumnDataSource, ColorBar, FixedTicker
-from bokeh.palettes import RdBu, Blues
-from bokeh.models.tools import HoverTool
-
 import numpy as np
-import statsmodels.api as sm
 from datetime import datetime, timedelta
-import seaborn as sns
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from scipy.stats import skew, skewtest, normaltest
+
+import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from seaborn.distributions import _freedman_diaconis_bins as n_bins_calc
 from scipy.special import erf
+from scipy.stats import skew, skewtest, normaltest
+import statsmodels.api as sm
 from statsmodels.nonparametric.kde import KDEUnivariate
+from statsmodels.nonparametric.smoothers_lowess import lowess
+
+from bokeh.plotting import figure
+from bokeh.models import LinearColorMapper, ColumnDataSource, ColorBar, FixedTicker, NumeralTickFormatter, Span
+from bokeh.palettes import RdBu, Blues
+from bokeh.models.tools import HoverTool
 
 
-def matrix_figure(df):
+def correlation(df):
 
     # Create Matrix Data
     _corr_matrix = df.corr().round(3)
