@@ -132,3 +132,18 @@ def distplot(e):
     p.yaxis.visible=False
     p.title.align = 'center'
     return p
+
+
+def residplot(yhat, e):
+    x, y = lowess(e, yhat).T
+
+    p = figure(title = "Residual Plot", tools="save, box_select, reset")
+    p.line(x=x, y=y, line_width=5, alpha=0.7)
+    p.circle(x=yhat, y=e, size=8, alpha=.7)
+
+    axhline = Span(location=0, dimension='width', line_width=1, line_dash='dotted')
+    p.add_layout(axhline)
+    p.xaxis[0].formatter = NumeralTickFormatter(format="0,0")
+    p.yaxis[0].formatter = NumeralTickFormatter(format="0,0")
+
+    return p
