@@ -14,7 +14,7 @@ from statsmodels.nonparametric.smoothers_lowess import lowess
 
 from bokeh.plotting import figure
 from bokeh.models import LinearColorMapper, ColumnDataSource, ColorBar, FixedTicker, NumeralTickFormatter, Span
-from bokeh.palettes import RdBu, Blues
+from bokeh.palettes import Blues, Reds
 from bokeh.models.tools import HoverTool
 
 
@@ -33,7 +33,8 @@ def correlation(df):
     corr.reset_index(inplace=True)
 
     # Create Figure
-    colors = RdBu[11][::-1]
+    reds = Reds[9]
+    colors = reds + reds[::-1][1:]
     mapper = LinearColorMapper(palette=colors, low=-1, high=1)
     source = ColumnDataSource(corr)
 
